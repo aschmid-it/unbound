@@ -3,7 +3,7 @@ This is a transcript (and/or step-by-step guide) how to setup up an Unbound DNS 
 
 ## Pre-checks
 ### Ubuntu 22.04 Server
-Setup a standard installation of a Ubuntu 22.04 Server (LTS) and make sure to do `apt update` and `apt upgrade`.
+Setup a standard installation of a Ubuntu 22.04 Server (LTS) and make sure to do `apt update` and `apt upgrade`. Of course you can use other Linux distros, e.g. Debian, but the file location mentioned in this document might be different.
 
 ### DNS Stub Listener
 Ubuntu and maybe also other Linux distro use a local DNS Stub Listener which per default listens on port 53. If this is the case a DNS server can't be setup as it needs to listen on the default DNS port 53. So the DNS Stub Listener needs to be disabled on this system.
