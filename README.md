@@ -1,5 +1,5 @@
 # unbound - Unbound DNS
-This is a transcript and/or step-by-step guide of setting up an Unbound DNS server for a home or small business environment.
+This is a transcript (and/or step-by-step guide) how to setup up an Unbound DNS server for a home or small business environment.
 
 ## Install
 - Install: `sudo apt install unbound`
