@@ -79,3 +79,8 @@ log-queries: yes
 </rule>
 ```
 
+## Acknowledgement
+This was put together by using the helpful information from several sources:
+- DNSWATCH: (https://dnswatch.com/dns-docs/UNBOUND/)
+- Calomel: (https://calomel.org/unbound_dns.html)
+- Blocklists: (https://github.com/hagezi/dns-blocklists)
