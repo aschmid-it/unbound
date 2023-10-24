@@ -1,6 +1,30 @@
 # unbound - Unbound DNS
 This is a transcript (and/or step-by-step guide) how to setup up an Unbound DNS server for a home or small business environment.
 
+## Pre-checks
+### DNS Stub Listener
+Ubuntu and maybe also other Linux distro use a local DNS Stub Listener which per default listens on port 53. If this is the case a DNS server can't be setup as it needs to listen on the default DNS port 53. So the DNS Stub Listener needs to be disabled on this system.
+
+Disable DNS Stub Listener in systemd-resolve daemon:
+	- Check if systemd-resolve is running by doing `lsof -i -N -P` and check port 53
+	- Disable systemd-resolve by editing `/etc/systemd/resolved.conf` and setting `DNSStubListener=no`
+	- Restart systemd-resovle with: `systemctl restart systemd-resolved.service`
+
+### Timezone
+This is optional but it's recommended to set your timezone correct so when reading logfiles the timestamps match up with the real local time.
+	- Check timezone with: `timedatectl status`
+	- Set with: `timedatectl set-timezone Europe/Berlin`
+
+### System settings 
+This should be adjusted according to the settings in unbound.conf.
+File: `/etc/sysctl.d/unbound.conf`:
+```conf
+# Adjust this to what you set in unbound.conf
+# This is for setting so-rcvbuf  and so-sndbuf: 8m (8 x 1024 x 1024) in bytes
+net.core.rmem_max=8388608
+net.core.wmem_max=8388608
+```
+
 ## Install
 - Install: `sudo apt install unbound`
 - Setup primary root DNS Servers (root.hints)
