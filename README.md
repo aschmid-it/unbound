@@ -52,12 +52,13 @@ chown unbound:unbound /var/log/unbound/
 touch /var/log/unbound/unbound.log
 chown unbound:unbound /var/log/unbound/unbound.log
 ```
-- Then fix appamor: `vi /etc/apparmor.d/local/usr.sbin.unbound`
-    ```
-    # Site-specific additions and overrides for usr.sbin.unbound.
-    # For more details, please see /etc/apparmor.d/local/README.
-    /var/log/unbound/unbound.log rw,
-    ```
+- Then fix appamor:
+  ###### `/etc/apparmor.d/local/usr.sbin.unbound`
+  ```
+  # Site-specific additions and overrides for usr.sbin.unbound.
+  # For more details, please see /etc/apparmor.d/local/README.
+  /var/log/unbound/unbound.log rw,
+  ```
 - Parse new config: `apparmor_parser -r /etc/apparmor.d/usr.sbin.unbound`
 - Restart: `systemctl restart unbound`
 
