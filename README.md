@@ -158,7 +158,7 @@ Then configure DOT:
        forward-addr: 2620:119:35::35@853#dns.opendsn.com
 ```
 
-### Logging
+### Log settings
 ```
   # log verbosity
     verbosity: 1
@@ -187,7 +187,7 @@ remote-control:
 To validate the configuration file you can use `unbound-checkconf`. 
 This will validate that the syntax of the configuration file is correct and prevent any errors when starting or re-starting unbound.
 
-## Logging
+## Logging DNS requests
 To get some insight and keep DNS information you can enable logging on the unbound server.
 
 ### Logfile
