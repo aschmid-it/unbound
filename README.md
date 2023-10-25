@@ -187,7 +187,10 @@ remote-control:
 To validate the configuration file you can use `unbound-checkconf`. 
 This will validate that the syntax of the configuration file is correct and prevent any errors when starting or re-starting unbound.
 
-## Logfile
+## Logging
+To get some insight and keep DNS information you can enable logging on the unbound server.
+
+### Logfile
 - If using a logfile first create:
   ```
   mkdir /var/log/unbound
