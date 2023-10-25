@@ -46,14 +46,14 @@ net.core.wmem_max=8388608
 
 ## Logfile
 - If using a logfile first create:
-```
-mkdir /var/log/unbound
-chown unbound:unbound /var/log/unbound/
-touch /var/log/unbound/unbound.log
-chown unbound:unbound /var/log/unbound/unbound.log
-```
+  ```
+  mkdir /var/log/unbound
+  chown unbound:unbound /var/log/unbound/
+  touch /var/log/unbound/unbound.log
+  chown unbound:unbound /var/log/unbound/unbound.log
+  ```
 - Then fix appamor:
-  ###### `/etc/apparmor.d/local/usr.sbin.unbound`
+  `/etc/apparmor.d/local/usr.sbin.unbound`
   ```
   # Site-specific additions and overrides for usr.sbin.unbound.
   # For more details, please see /etc/apparmor.d/local/README.
