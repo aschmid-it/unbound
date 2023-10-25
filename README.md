@@ -44,6 +44,11 @@ chmod 500 /var/lib/unbound/root.key
    - Check: `unbound-anchor -l` 
 - Optional: start unbound control: `unbound-control start`
 
+## Configuration
+The main unbound configuration file is `/etc/unbound.conf`. This file will source all configuration files from `/etc/unbound/unbound.conf.d/`. It's best practice to add a separate file with you specific configuration to the unbound.conf.d directory.
+
+The complete configuration file can be found in the code section here: [aschmid-it.conf](etc/unbound/unbound.conf.d/aschmid-it.conf)
+
 ## Logfile
 - If using a logfile first create:
   ```
