@@ -35,13 +35,13 @@ net.core.wmem_max=8388608
     - Get latest root-hints: `curl -Lo /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache`
     - Change owner: `chown unbound:unbound /var/lib/unbound/root.hints`
 - Setup certificate for DNSSEC (root.key) (Note: might have be done by installer already)
-	- Get auto-trust-anchor for DNSSEC: 
-	```shell
-    unbound-anchor -a /var/lib/unbound/root.key
-    chown unbound:unbound /var/lib/unbound/root.key
-    chmod 500 /var/lib/unbound/root.key
-    ```
-	    - Check: `unbound-anchor -l` 
+  - Get auto-trust-anchor for DNSSEC: 
+```shell
+unbound-anchor -a /var/lib/unbound/root.key
+chown unbound:unbound /var/lib/unbound/root.key
+chmod 500 /var/lib/unbound/root.key
+```
+   - Check: `unbound-anchor -l` 
 - Optional: start unbound control: `unbound-control start`
 
 ## Logfile
