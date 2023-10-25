@@ -49,6 +49,8 @@ The main unbound configuration file is `/etc/unbound.conf`. This file will sourc
 
 The complete configuration file can be found in the code section here: [aschmid-it.conf](etc/unbound/unbound.conf.d/aschmid-it.conf)
 
+To validate the configuration file you can use `unbound-checkconf`. This will validate that the syntax of the configuration file is correct and prevent any errors when starting or re-starting unbound.
+
 ## Logfile
 - If using a logfile first create:
   ```
