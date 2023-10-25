@@ -49,6 +49,61 @@ The main unbound configuration file is `/etc/unbound.conf`. This file will sourc
 
 The complete configuration file can be found in the code section here: [aschmid-it.conf](etc/unbound/unbound.conf.d/aschmid-it.conf)
 
+Here are a couple important sections:
+
+#### Local network
+```
+  private-domain: "home.lan"
+  domain-insecure: "home.lan" # stop DNSSEC validation for this zone
+  domain-insecure: "168.192.in-addr.arpa."
+  local-zone: "168.192.in-addr.arpa." nodefault
+  stub-zone:
+       name: "home.lan"
+       stub-addr: 192.168.1.1
+       stub-tls-upstream: no
+  stub-zone:
+       name: "168.192.in-addr.arpa."
+       stub-addr: 192.168.1.1
+       stub-tls-upstream: no
+  stub-zone:
+       name: "8.6.1.0.2.9.1.0.0.0.d.f.ip6.arpa."
+       stub-addr: fd00:192:168:1:1111:2222:3333:4444
+       stub-tls-upstream: no
+  stub-zone:
+       name: "b.d.0.0.3.0.0.2.ip6.arpa."
+       stub-addr: fd00:192:168:1:1111:2222:3333:4444
+       stub-tls-upstream: no
+```
+
+### DNS-over-TLS (DOT) Configuration
+```
+  # If you do not want to use the root DNS servers you can use the following
+  # forward-zone to forward all queries to Google DNS, OpenDNS.com or your
+  # local ISP's dns servers for example. If use use forward-zone you must make
+  # sure to comment out the auto-trust-anchor-file directive above or else all
+  # DNS queries will fail. We highly suggest using Google DNS as it is
+  # extremely fast.
+  #
+    forward-zone:
+       name: "."
+       # forward-addr: 8.8.8.8        # Google Public DNS
+       # forward-addr: 4.2.2.4        # Level3 Verizon
+       # forward-addr: 74.207.247.4   # OpenNIC DNS
+       # forward-addr: 1.1.1.1        # Cloudflare
+       # 
+       # DoT Resolvers - General
+       # forward-tls-upstream: yes
+       # forward-addr: 1.1.1.2@853#security.cloudflare-dns.com
+       # forward-addr: 1.0.0.2@853#security.cloudflare-dns.com
+       # forward-addr: 2606:4700:4700::1112@853#security.cloudflare-dns.com
+       # forward-addr: 2606:4700:4700::1002@853#security.cloudflare-dns.com
+       # forward-addr: 208.67.220.220@853#dns.opendns.com
+       # forward-addr: 208.67.222.222@853#dns.opendns.com 
+       # forward-addr: 2620:119:53::53@853#dns.opendns.com
+       # forward-addr: 2620:119:35::35@853#dns.opendsn.com
+```
+
+
 To validate the configuration file you can use `unbound-checkconf`. This will validate that the syntax of the configuration file is correct and prevent any errors when starting or re-starting unbound.
 
 ## Logfile
