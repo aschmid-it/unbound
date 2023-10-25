@@ -44,6 +44,24 @@ chmod 500 /var/lib/unbound/root.key
    - Check with: `unbound-anchor -l` 
 - Optional: start unbound control: `unbound-control start`
 
+### Regular updates
+The root.hints file doesn't change very often but it's a good idea to pull a regular update. 
+
+To do this edit cron with `crontab -e`:
+```
+# m h  dom mon dow   command
+0 0 * * * /usr/local/bin/update-unbound.sh
+```
+This will run the command daily at midnight.
+
+`/usr/local/bin/update-unbound.sh`
+```
+curl https://www.internic.net/domain/named.cache -o /var/lib/unbound/root.hints
+chown unbound:unbound /var/lib/unbound/root.hints
+```
+Check crontab configuration with `crontab -l`.
+
+
 ## Configuration
 The main unbound configuration file is `/etc/unbound.conf`. This file will source all configuration files from `/etc/unbound/unbound.conf.d/`. It's best practice to add a separate file with you specific configuration to the unbound.conf.d directory.
 
