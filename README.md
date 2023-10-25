@@ -51,7 +51,54 @@ The complete configuration file can be found in the code section here: [aschmid-
 
 Here are a couple important sections:
 
-#### Local network
+### Interface and protocol
+It's important you to choose the correct interface address to listen on. In below `0.0.0.0` is select which means it will listen on all network interface. You can specify a specific interface but be careful not to use `127.0.0.0` because then unbound will only listen to requests from localhost and will not be reachable by other systems.
+
+```
+  # specify the interfaces to answer queries from by ip-address.  The default
+  # is to listen to localhost (127.0.0.1 and ::1).  specify 0.0.0.0 and ::0 to
+  # bind to all available interfaces.  specify every interface[@port] on a new
+  # 'interface:' labeled line.  The listen interfaces are not changed on
+  # reload, only on restart.
+    interface: 0.0.0.0
+    interface: ::0
+
+  # port to answer queries from
+    port: 53
+
+  # Enable IPv4, "yes" or "no".
+    do-ip4: yes
+
+  # Enable IPv6, "yes" or "no".
+    do-ip6: yes
+
+  # Enable UDP, "yes" or "no".
+    do-udp: yes
+
+  # Enable TCP, "yes" or "no". If TCP is not needed, Unbound is actually
+  # quicker to resolve as the functions related to TCP checks are not done.i
+  # NOTE: you may need tcp enabled to get the DNSSEC results from *.edu domains
+  # due to their size.
+    do-tcp: yes
+```
+
+### Access control
+Make sure that this section enables the networks from which you want to access your unbound server. If the correct networks are not enabled unbound will block requests and hence you not get you DNS server to answer requests.
+```
+  # control which client ips are allowed to make (recursive) queries to this
+  # server. Specify classless netblocks with /size and action.  By default
+  # everything is refused, except for localhost.  Choose deny (drop message),
+  # refuse (polite error reply), allow (recursive ok), allow_snoop (recursive
+  # and nonrecursive ok)
+    access-control: 127.0.0.0/8 allow
+    access-control: 10.0.0.0/8 allow
+    access-control: 192.168.0.0/16 allow
+    access-control: fe80::/8 allow
+    access-control: fd00:192:168:10::/64 allow
+    access-control: 2003:db::/16 allow
+```
+
+### Local network
 ```
   private-domain: "home.lan"
   domain-insecure: "home.lan" # stop DNSSEC validation for this zone
@@ -76,6 +123,14 @@ Here are a couple important sections:
 ```
 
 ### DNS-over-TLS (DOT) Configuration
+First enable DOT:
+```
+  # Enable DoT in Unbound
+    tls-upstream: no # enabling here will enable for all, use forward-tls-upstream and stub-tls-upstream instead per zone
+    tls-cert-bundle: "/etc/ssl/certs/ca-certificates.crt"
+```
+
+Then configure DOT:
 ```
   # If you do not want to use the root DNS servers you can use the following
   # forward-zone to forward all queries to Google DNS, OpenDNS.com or your
@@ -92,19 +147,45 @@ Here are a couple important sections:
        # forward-addr: 1.1.1.1        # Cloudflare
        # 
        # DoT Resolvers - General
-       # forward-tls-upstream: yes
-       # forward-addr: 1.1.1.2@853#security.cloudflare-dns.com
-       # forward-addr: 1.0.0.2@853#security.cloudflare-dns.com
-       # forward-addr: 2606:4700:4700::1112@853#security.cloudflare-dns.com
-       # forward-addr: 2606:4700:4700::1002@853#security.cloudflare-dns.com
-       # forward-addr: 208.67.220.220@853#dns.opendns.com
-       # forward-addr: 208.67.222.222@853#dns.opendns.com 
-       # forward-addr: 2620:119:53::53@853#dns.opendns.com
-       # forward-addr: 2620:119:35::35@853#dns.opendsn.com
+       forward-tls-upstream: yes
+       forward-addr: 1.1.1.2@853#security.cloudflare-dns.com
+       forward-addr: 1.0.0.2@853#security.cloudflare-dns.com
+       forward-addr: 2606:4700:4700::1112@853#security.cloudflare-dns.com
+       forward-addr: 2606:4700:4700::1002@853#security.cloudflare-dns.com
+       forward-addr: 208.67.220.220@853#dns.opendns.com
+       forward-addr: 208.67.222.222@853#dns.opendns.com 
+       forward-addr: 2620:119:53::53@853#dns.opendns.com
+       forward-addr: 2620:119:35::35@853#dns.opendsn.com
+```
+
+### Logging
+```
+  # log verbosity
+    verbosity: 1
+
+  # Logging
+    use-syslog: no              # if set to yes logfile is overwritten, default is yes
+    logfile: /var/log/unbound/unbound.log
+    log-time-ascii: yes         # Logs time in ascii instead of epoch, default is no
+    log-queries: no
+    log-replies: yes
+    log-tag-queryreply: yes     # Adds tags query and reply to log files, default is no
+    log-local-actions: yes      # Logs lines to inform about local action, e.g. local-zone
+    # log-servfail: no          # logs why queries failed
 ```
 
 
-To validate the configuration file you can use `unbound-checkconf`. This will validate that the syntax of the configuration file is correct and prevent any errors when starting or re-starting unbound.
+
+### Monitoring
+If you want to remotely monitor your unbound server with something like Prometheus make sure to include:
+```
+remote-control:
+  control-enable: yes
+```
+
+### Check configuration
+To validate the configuration file you can use `unbound-checkconf`. 
+This will validate that the syntax of the configuration file is correct and prevent any errors when starting or re-starting unbound.
 
 ## Logfile
 - If using a logfile first create:
